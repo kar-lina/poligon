@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+use App\Http\Requests\BlogCategoryCreateRequest;
 use Illuminate\Http\Request;
-
 use App\Models\BlogCategory;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 
@@ -16,7 +16,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $paginator = BlogCategory::paginate(5);
+        $paginator = BlogCategory::paginate(15);
 
         return view('blog.admin.categories.index', compact('paginator'));
     }
@@ -26,11 +26,13 @@ class CategoryController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create()
     {
-        $item = BlogCategory::findorFail($id);
+
+        $item = new BlogCategory();
         $categoryList = BlogCategory::all();
-        return view('blog.admin.categories.edit', compact('item', 'categoryList'));
+        return view('blog.admin.categories.edit',
+            compact('item', 'categoryList'));
     }
 
     /**
@@ -39,9 +41,28 @@ class CategoryController extends BaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BlogCategoryCreateRequest $request)
     {
-        dd(__METHOD__);
+        $data=$request->input();
+        if (empty($data['slug'])) {
+            $data['slug'] = str_slug($data['title']);
+        }
+
+        //создаст объект но недобавит в в БД
+        //$item = new BlogCategory($data);
+        //$item->save();
+
+        //создаст объект ,добавит в в БД
+        $item = (new BlogCategory())->create($data);
+
+        if ($item) {
+            return redirect()->route('blog.admin.categories.edit', [$item->id])
+                ->with(['success' => 'Успешно сохранено']);
+        }else{
+            return back()
+                ->withErrors(['msg' => "Ошибка сохранения"])
+                ->withInput();
+        }
     }
 
 
