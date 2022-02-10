@@ -70,12 +70,20 @@ class CategoryController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
+     * @param BlogCategoryRepository $categoryRepository
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, BlogCategoryRepository $categoryRepository )
     {
-        $item = BlogCategory::findorFail($id);
-        $categoryList = BlogCategory::all();
+        $item = $categoryRepository->getEdit($id);
+        if(empty($item)){
+            abort(404);
+        }
+        $categoryList = $categoryRepository->getForComboBox();
+
+        /*$item = BlogCategory::findorFail($id);
+        $categoryList = BlogCategory::all();*/
         return view('blog.admin.categories.edit', compact('item', 'categoryList'));
 
     }
@@ -90,16 +98,6 @@ class CategoryController extends BaseController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        /*$rules = [
-            'title' => 'required|min:5|max:200',
-            'slug' => 'max:200',
-            'description' => 'string|max:500|min:3',
-            'parent_id' => 'required|integer|exists:blog_categories,id',
-        ];
-        $validatedData = $this ->validate($request,$rules);*/
-
-        //dd($validatedData);
-
         $item = BlogCategory::find($id);
 
         if (empty($item)) {
@@ -108,9 +106,7 @@ class CategoryController extends BaseController
                 ->withInput();
         }
         $data = $request->all();
-        $result = $item
-            ->fill($data)
-            ->save();
+        $result = $item->update($data);
 
         if ($result) {
             return redirect()
