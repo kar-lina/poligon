@@ -17,16 +17,16 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['namespace'=>'Blog', 'prefix'=>'blog'], function(){
+Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function () {
     Route::resource('posts', 'PostController')->names('blog.posts');
 });
 
 //>Админка Блога
-$groupData =[
-    'namespace'=>'Blog\Admin',
+$groupData = [
+    'namespace' => 'Blog\Admin',
     'prefix'   => 'admin/blog',
 ];
-Route::group($groupData,function(){
+Route::group($groupData, function () {
     //BlogCategory
     $methods = ['index', 'edit', 'update', 'create', 'store',];
     Route::resource('categories', 'CategoryController')
@@ -40,4 +40,6 @@ Route::group($groupData,function(){
 });
 //<
 //Route::resource('rest', 'RestTestController')->names('rest');
+Auth::routes();
 
+Route::get('/home', 'HomeController@index')->name('home');
