@@ -11,7 +11,8 @@ class BlogPostRepository extends CoreRepository
     /**
      * @return string
      */
-    protected function getModelClass(){
+    protected function getModelClass()
+    {
         return Model::class;
     }
     /**
@@ -21,16 +22,25 @@ class BlogPostRepository extends CoreRepository
      */
     public function getAllWithPaginate()
     {
-        $columns = ['id','title', 'slug', 'is_published', 'published_at', 'user_id', 'category_id'];
+        $columns = ['id', 'title', 'slug', 'is_published', 'published_at', 'user_id', 'category_id'];
 
         $result = $this
             ->startConditions()
             ->select($columns)
-            ->orderBy('id'. 'DESC')
+            ->orderBy('id', 'DESC')
+            //->with(['category', 'user'])
+            ->with([
+                //or
+                'category' => function ($query) {
+                    $query->select(['id', 'title']); // нужно два поля 
+                },
+                //or
+                'user:id,name'
+            ])
             ->paginate(25);
+
+
+
         return $result;
-
-
     }
-
 }

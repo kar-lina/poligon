@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
-//use App\Http\Requests\BlogCategoryCreateRequest;
-//use App\Http\Requests\BlogCategoryUpdateRequest;
-use Illuminate\Request;
+
+use Illuminate\Http\Request;
 use App\Models\BlogPost;
 use App\Repositories\BlogPostRepository;
+
 
 /**
  * Управление статьями блога
@@ -26,7 +26,6 @@ class PostController extends BaseController
         parent::__construct();
 
         $this->blogPostRepository = app(BlogPostRepository::class);
-
     }
 
     /**
@@ -39,7 +38,6 @@ class PostController extends BaseController
         $paginator = $this->blogPostRepository->getAllWithPaginate();
 
         return view('blog.admin.posts.index', compact('paginator'));
-
     }
 
     /**
@@ -49,7 +47,7 @@ class PostController extends BaseController
      */
     public function create()
     {
-
+        dd(__METHOD__);
     }
 
     /**
@@ -58,9 +56,9 @@ class PostController extends BaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BlogCategoryCreateRequest $request)
+    public function store(Request $request)
     {
-
+        //
     }
 
 
@@ -68,14 +66,12 @@ class PostController extends BaseController
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @param BlogCategoryRepository $categoryRepository
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, BlogCategoryRepository $categoryRepository )
+    public function edit($id)
     {
-
-
+        dd(__METHOD__, $id);
     }
 
     /**
@@ -86,8 +82,21 @@ class PostController extends BaseController
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(BlogCategoryUpdateRequest $request, $id)
+    public function update($id, Request $request)
     {
+        dd(__METHOD__, $request->all(), $id);
+    }
 
+    /**
+     * Remove the specified resourcefrom the storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function destroy($id, Request $request)
+    {
+        dd(__METHOD__, $request->all(), $id);
     }
 }
