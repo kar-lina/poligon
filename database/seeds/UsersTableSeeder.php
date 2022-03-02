@@ -13,14 +13,14 @@ class UsersTableSeeder extends Seeder
     {
         $data = [
             [
-                'name'=>'Автор не известен',
-                'email'=>'athor_unknown@g.g',
-                'password'=>bcrypt(str_random(16)),
+                'name' => 'Автор не известен',
+                'email' => 'athor_unknown@g.g',
+                'password' => bcrypt(Str::random(16)),
             ],
             [
-                'name'=>'Автор',
-                'email'=>'athor@g.g',
-                'password'=>bcrypt('123123'),
+                'name' => 'Автор',
+                'email' => 'athor@g.g',
+                'password' => bcrypt('123123'),
             ],
         ];
         DB::table('users')->insert($data);
