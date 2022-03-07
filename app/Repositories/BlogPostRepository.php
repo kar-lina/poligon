@@ -17,6 +17,7 @@ class BlogPostRepository extends CoreRepository
     }
     /**
      * Получить список статей для вывода пагинатором
+     * (Админка)
      * @param int|null $perPage
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
@@ -42,5 +43,10 @@ class BlogPostRepository extends CoreRepository
 
 
         return $result;
+    }
+
+    public function getEdit($id)
+    {
+        return $this->startConditions()->find($id);
     }
 }
