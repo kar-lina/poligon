@@ -29,13 +29,13 @@
                             minlength="3" required>
                     </div>
                     <div class="form-group">
-                        <label for='content_raw'>Заголовок</label>
+                        <label for='content_raw'>Статья</label>
                         <textarea name="content_raw" id="content_raw" class="form-control" rows="20">{{old('content_raw', $item->content_raw)}}
                     </textarea>
                     </div>
 
                 </div>
-                <div class="tab-pane fade show active" id="adddata" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane fade show" id="adddata" role="tabpanel" aria-labelledby="nav-home-tab">
                     <div class="form-group">
                         <label for='category_id'>Категория</label>
                         <select name="category_id" id="category_id" class="form-control"
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for='slug'>Идентификатор</label>
-                        <input name="title" value="{{$item->slug}}" id="slug" type="text" class="form-control">
+                        <input name="slug" value="{{$item->slug}}" id="slug" type="text" class="form-control">
                     </div>
 
                     <div class="form-group">
@@ -63,8 +63,8 @@
                     <div class="form-checks">
                         <input name="is_published" value='0' type="hidden">
 
-                        <input name="is_published" type="checkbox" value="{{$item->is_published}}"
-                            class="form-check-input" @if ($item->is_published)
+                        <input name="is_published" type="checkbox" class="form-check-input" value="1"
+                            @if($item->is_published)
                         checked='checked'
                         @endif
                         >

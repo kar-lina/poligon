@@ -40,6 +40,11 @@
                 </div>
                 <div class="form-group">
                     {{ $item->deleted_at }}
+                    <label for="title"> Опубликованно</label>
+                    <input type="text" value="{{ $item->published_at }}" class="form-control" disabled>
+                </div>
+                <div class="form-group">
+                    {{ $item->deleted_at }}
                     <label for="title"> Удалено</label>
                     <input type="text" value="{{ $item->deleted_at }}" class="form-control" disabled>
                 </div>
