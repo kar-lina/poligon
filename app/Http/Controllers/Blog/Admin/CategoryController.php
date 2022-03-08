@@ -24,7 +24,6 @@ class CategoryController extends BaseController
         parent::__construct();
 
         $this->blogCategoryRepository = app(BlogCategoryRepository::class);
-
     }
 
     /**
@@ -50,8 +49,10 @@ class CategoryController extends BaseController
 
         $item = new BlogCategory();
         $categoryList = $this->blogCategoryRepository->getForComboBox();
-        return view('blog.admin.categories.edit',
-            compact('item', 'categoryList'));
+        return view(
+            'blog.admin.categories.edit',
+            compact('item', 'categoryList')
+        );
     }
 
     /**
@@ -62,10 +63,12 @@ class CategoryController extends BaseController
      */
     public function store(BlogCategoryCreateRequest $request)
     {
-        $data=$request->input();
+        $data = $request->input();
+        /* ушло в обсервер
+         
         if (empty($data['slug'])) {
-            $data['slug'] = str_slug($data['title']);
-        }
+            $data['slug'] = \Str::slug($data['title']);
+        }*/
 
         //создаст объект но недобавит в в БД
         //$item = new BlogCategory($data);
@@ -77,7 +80,7 @@ class CategoryController extends BaseController
         if ($item) {
             return redirect()->route('blog.admin.categories.edit', [$item->id])
                 ->with(['success' => 'Успешно сохранено']);
-        }else{
+        } else {
             return back()
                 ->withErrors(['msg' => "Ошибка сохранения"])
                 ->withInput();
@@ -93,10 +96,10 @@ class CategoryController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, BlogCategoryRepository $categoryRepository )
+    public function edit($id, BlogCategoryRepository $categoryRepository)
     {
         $item = $this->blogCategoryRepository->getEdit($id);
-        if(empty($item)){
+        if (empty($item)) {
             abort(404);
         }
         $categoryList
@@ -104,15 +107,16 @@ class CategoryController extends BaseController
 
         /*$item = BlogCategory::findorFail($id);
         $categoryList = BlogCategory::all();*/
-        return view('blog.admin.categories.edit',
-            compact('item', 'categoryList'));
-
+        return view(
+            'blog.admin.categories.edit',
+            compact('item', 'categoryList')
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\BlogCategoryUpdateRequest $request
      * @param int $id
      * @return \Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
@@ -133,7 +137,6 @@ class CategoryController extends BaseController
             return redirect()
                 ->route('blog.admin.categories.edit', $item->id)
                 ->with(['success' => "Успешно сохранено"]);
-
         } else {
             return back()
                 ->withErrors(['msg' => "Ощибка сохранения"])
